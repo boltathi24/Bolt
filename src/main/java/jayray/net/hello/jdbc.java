@@ -10,111 +10,52 @@ public class jdbc {
 	String URL = "jdbc:mysql://localhost:3306/mysql_db";
 	String user_name = "root";
 	String pass = "Hackerbolt24";
-	public String insertData(String userid,String password,String email,String phone)
+	public String insertData(String userid,String password,String email,String phone) throws SQLException, ClassNotFoundException
 	{
 		 
 		String query = "insert into logininfo Values ("+userid+",'"+password+"','"+email+"',"+phone+")";
+		System.out.println("DBStatus:");
+		System.out.println(userid);
 		System.out.println(query);
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Connection con=null;
-		try {
-			con = DriverManager.getConnection(URL,user_name,pass);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Statement st=null;
-		try {
-			st = con.createStatement();
-		} catch (SQLException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-		ResultSet rs=null;
-		String dataInsertion="Data inserted Successfully";
-		System.out.println("userID"+userid);
-		try {
+		
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con = DriverManager.getConnection(URL,user_name,pass);
+		Statement st = con.createStatement();
+		String datainsertion="Data insertion: Success";
+		try
+		{
 		st.executeUpdate(query);
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			dataInsertion="Data is not inserted";
 		}
-	
+		catch(Exception e)
+		{
+			datainsertion="Data insertion Failure";
+		}
+		return datainsertion;
 		
-		try {
-			st.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			con.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		return dataInsertion;
 	}
-	public String dbValidate(String n)
+	public String dbValidate(String n) throws ClassNotFoundException, SQLException
 	{
-		 
 		String query = "select password from loginInfo where userId="+n+"";
+		
+		System.out.println("DBValidationStatus:");
+		
+		
+		Class.forName("com.mysql.jdbc.Driver");
+		String password="";
+		Connection con = DriverManager.getConnection(URL,user_name,pass);
+		Statement st = con.createStatement();
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		ResultSet rs=st.executeQuery(query);	
+		while(rs.next())
+		{
+			password=rs.getString("password");
 		}
-		Connection con=null;
-		try {
-			con = DriverManager.getConnection(URL,user_name,pass);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		Statement st=null;
-		try {
-			st = con.createStatement();
-		} catch (SQLException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-		ResultSet rs=null;
-		try {
-			rs = st.executeQuery(query);
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		String password=null;
-		try {
-			while(rs.next())
-			{
-			 password = rs.getString("password");
-			}
-			System.out.println(password);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		catch(Exception e)
+		{
+			password="unable to Retrieve";
 		}
 		
-		try {
-			st.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			con.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
 		return password;
 		
 	}
