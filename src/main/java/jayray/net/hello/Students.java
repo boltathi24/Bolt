@@ -6,8 +6,15 @@ public class Students {
 	String password=null;
 	String email=null;
 	String phone=null;
+	Students message=null;
 	public String getUserId() {
 		return userId;
+	}
+	public Students getMessage() {
+		return message;
+	}
+	public void setMessage(Students message) {
+		this.message = message;
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;

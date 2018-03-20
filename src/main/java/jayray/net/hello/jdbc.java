@@ -30,6 +30,7 @@ public class jdbc {
 		{
 			datainsertion="Data insertion Failure";
 		}
+		System.out.println(datainsertion);
 		return datainsertion;
 		
 	}

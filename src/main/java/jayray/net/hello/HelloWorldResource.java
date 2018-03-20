@@ -38,8 +38,7 @@ public class HelloWorldResource {
 	@Path("/consume")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces({MediaType.TEXT_PLAIN})
-	
+	@Produces({MediaType.TEXT_PLAIN})	
 	public String  consumeJson(Students s) {
 		System.out.println("Hi");
 		System.out.println(s.getEmail());		
@@ -51,12 +50,25 @@ public class HelloWorldResource {
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String signup(Students s) throws ClassNotFoundException, SQLException {		
-		return j.insertData(s.getUserId(), s.getPassword(), s.getPassword(), s.getPhone());
+		
+		return j.insertData(s.getUserId(), s.getPassword(), s.getEmail(), s.getPhone());
 	}
+	
+	@Path("/SignUp1")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response signup1(Students s) throws ClassNotFoundException, SQLException {		
+		String message= j.insertData(s.getUserId(), s.getPassword(), s.getEmail(), s.getPhone());
+		Response r=new Response();
+		r.setMessage(message);
+		return r;
+	}
+	
 	
 	@Path("/Login")
 	@POST
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.TEXT_PLAIN)	
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String Login(Students s) throws ClassNotFoundException, SQLException {	
 		String errorMessage="";
@@ -67,6 +79,7 @@ public class HelloWorldResource {
 		}
 		else
 			errorMessage="Login UnSuccessful! Either UserName or Password is Incorrect";
+		System.out.println(errorMessage);
 		return errorMessage;
 	}
 
